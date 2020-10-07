@@ -22,7 +22,7 @@ const UNDEF: &str = "";
 
 const W_NAMES: [(&str, &str, bool); 10] = [
     ("", UNDEF, true),
-    ("st", TERM, true),
+    ("Alacritty", TERM, true),
     ("zsh", TERM, true),
     ("nvim", CODE, true),
     ("Discord", DISCORD, false),
@@ -53,9 +53,9 @@ const BACKGROUND: &str = BLACK;
 const TEXT_COLOR: &str = WHITE;
 
 // Network
-const WL_PATH: &str = "/sys/class/net/wlp3s0/";
+const WL_PATH: &str = "/sys/class/net/wlan0/";
 const WL_IND: &str = "";
-const ETH_PATH: &str = "/sys/class/net/enp2s0/";
+const ETH_PATH: &str = "/sys/class/net/eno1/";
 const ETH_IND: &str = "";
 const NET_UP_COLOR: &str = GREEN;
 const NET_DOWN_COLOR: &str = RED;
@@ -88,10 +88,9 @@ const WS_NUM_COLOR: &str = LIGHTGREY;
 
 // Cpu
 const CP_IND: &str = "";
-const CPU_RANGES: [(&str, u32); 5] = [
-    (GREEN, 0),
-    (TEXT_COLOR, 10),
-    (LIGHTBROWN, 20),
+const CPU_RANGES: [(&str, u32); 4] = [
+    (GREY, 0),
+    (TEXT_COLOR, 20),
     (ORANGE, 40),
     (RED, 80),
 ];
@@ -259,11 +258,12 @@ pub fn time(module: &mut Module<()>) -> String {
     let now = Local::now();
 
     if module.is_detailed() {
-        format!("{:02}{}{:02} {:?} {}-{:02}-{:02}",
+        format!("{:?} w{} {:02}{}{:02} {}-{:02}-{:02}",
+            now.weekday(),
+            now.iso_week().week(),
             now.hour(),
             colon,
             now.minute(),
-            now.weekday(),
             now.year(),
             now.month(),
             now.day())
@@ -384,7 +384,7 @@ pub fn workspaces(module: &mut Module<i64>) -> String {
         }
 
         // Pad the icon with spaces
-        space_icon = format!(" {} ", space_icon);
+        space_icon = format!("  {}  ", space_icon);
 
         // Create a button for easier navigation
         space_icon = buttonize(&space_icon, &format!("workspace {}", space_name));
@@ -401,7 +401,7 @@ pub fn workspaces(module: &mut Module<i64>) -> String {
             );
             if n > current_ws {
                 for i in current_ws..n {
-                    let mut name = format!(" {} ", i);
+                    let mut name = format!("  {}  ", i);
                     name = paint(&name, WS_NUM_COLOR, "F");
                     name = buttonize(&name, &format!("workspace {}", i));
                     space_strings.push(name);
