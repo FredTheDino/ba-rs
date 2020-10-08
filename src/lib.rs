@@ -241,6 +241,11 @@ impl<T: Send> BarStr for Module<T> {
 /* Modules */
 /*         */
 
+/// Return the same string all the time, usefull for formatting.
+pub fn string(out: String) -> impl Fn(&mut Module<()>) -> String {
+    move |_| out.clone()
+}
+
 /// Create a lemonbar-formatted `String` representing the current time.
 pub fn time(module: &mut Module<()>) -> String {
     let colon = paint(":", TI_COLON_COLOR, "F");
