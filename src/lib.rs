@@ -241,8 +241,8 @@ impl<T: Send> BarStr for Module<T> {
 /* Modules */
 /*         */
 
-/// Return the same string all the time, usefull for formatting.
-pub fn string(out: String) -> impl Fn(&mut Module<()>) -> String {
+/// Return the same string all the time, useful for formatting.
+pub fn text(out: String) -> impl Fn(&mut Module<()>) -> String {
     move |_| out.clone()
 }
 
